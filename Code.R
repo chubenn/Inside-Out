@@ -1,7 +1,8 @@
-pacman::p_load(tidyverse,tm,tidytext,ggplot2,quanteda,stm)
+pacman::p_load(tidyverse,tm,tidytext,ggplot2,quanteda,stm,dplyr)
 
 
-stop <- tibble(text = stopwords("SMART"))
+stop.1 <- tibble(text = stopwords("SMART"))
+stop <- rbind(stop.1,"ill","im","yeah","dont","hey","back","lets")
 nrc <- sentiments %>% filter(lexicon == "nrc") %>% select(-score, -lexicon)
 text_cleanish <- read_csv("GitHub/Inside-Out/text_cleanish.csv") 
 
@@ -109,26 +110,34 @@ scale_x_reordered <- function(..., sep = "___") {
   ggplot2::scale_x_discrete(labels = function(x) gsub(reg, "", x), ...)
 }
 
+test <- inner_join(text.dat,sent.speaker)
+test.1 <- inner_join(test,sent.join)
+test.2 <- inner_join(test.1,results)
+
+test.3 <- test.2 %>%
+  distinct()
+
+write.csv(test.3,"insidetest.csv")
 ##cleaning
 
 text.dat <- text_cleanish %>% 
   as.tibble() %>%
   janitor::clean_names() %>%
-  mutate(text = removePunctuation(as.character(text))) %>% 
+  mutate(text = removePunctuation(as.character(text)),
+         linenumber = row_number()) %>% 
   unnest_tokens(text, text) %>%
-  anti_join(stop)
+  anti_join(stop) %>%
+  filter(speaker %in% c("Joy","Fear","Disgust","Anger","Sadness","Bing Bong"))
 
 text.dat %>%
-  count(text, sort = TRUE)
-speaker_count <- text.dat %>%
+  filter(speaker %in% c("Joy","Fear","Disgust","Anger","Sadness","Bing Bong")) %>% 
   count(speaker, sort = TRUE)
-
-text.dat.1 <- text.dat %>%
-  filter(speaker == list("Joy","Sadness","Bing Bong","Fear","Anger",
-                         "Disgust","Mom","Riley","Dad"))
+text.dat %>%
+  filter(speaker %in% c("Joy","Fear","Disgust","Anger","Sadness","Bing Bong")) %>% 
+  count(text, sort = TRUE)
 
 ##Structural stuff
-speaker_tf_idf <- text.dat.1 %>%
+speaker_tf_idf <- text.dat %>%
   count(speaker, text, sort = TRUE) %>%
   bind_tf_idf(text, speaker, n) %>%
   arrange(-tf_idf) %>%
@@ -173,20 +182,29 @@ td_inside %>%
 
 ##sentiment analysis first
 sent.join <- text.dat %>%
-  inner_join(nrc, by = c("text" = "word")) 
+  left_join(nrc, by = c("text" = "word")) 
 
-sent.speaker <- text.dat %>%
+sent.speaker <- text.dat %>% 
+  filter(speaker %in% c("Joy","Fear","Disgust","Anger","Sadness","Bing Bong")) %>%
   inner_join(nrc, by = c("text" = "word")) %>%
   count(speaker, sentiment) %>%
   spread(sentiment, n, fill = 0) %>%
-  mutate(sentiment = positive-negative, 
+  mutate(sentiment.over = positive-negative, 
          total = anger + anticipation + disgust + fear + joy + 
            sadness + surprise + trust + negative + positive,
-         ratio_positive = (anticipation + joy + surprise + trust + positive)/total) %>%
-  filter(ratio_positive != 1 & ratio_positive != 0) %>%
-  arrange(desc(ratio_positive))
+         ratio_positive = (anticipation + joy + surprise + trust + positive)/total,
+         total_emotions = joy + fear + sadness + anger + disgust,
+         joy_percent = joy/total_emotions,
+         fear_percent = fear/total_emotions,
+         sadness_percent = sadness/total_emotions,
+         anger_percent = anger/total_emotions,
+         disgust_percent = disgust/total_emotions) %>%
+  arrange(desc(ratio_positive)) %>%
+  select(speaker,joy,joy_percent,fear,fear_percent,sadness,sadness_percent,
+         anger,anger_percent,disgust,disgust_percent,sentiment.over,total,ratio_positive)
 
 sent.join %>%
+  filter(sentiment %in% c("joy","fear","disgust","anger","sadness")) %>% 
   count(text, sentiment) %>%
   group_by(sentiment) %>%
   top_n(10, n) %>%
@@ -198,11 +216,6 @@ sent.join %>%
   coord_flip()
 
 ##gobbledygook
-text_cleanish %>%
-  summary(n_text = n_distinct(speaker))
-
-count_syllable("I want to work on my project")
-nsyllable("I want to work on my project")
 
 gobble_text <- text_cleanish %>%
   unnest_tokens(text,text, drop = FALSE) %>%
@@ -219,41 +232,20 @@ results <- left_join(gobble_text %>%
                        summarise(n_polysyllables = n())) %>%
     mutate(SMOG = 1.0430 * sqrt(30 * n_polysyllables/n_text) + 3.1291) %>%
   filter(is.na(SMOG) == FALSE & n_text > 5) %>%
-  arrange(desc(SMOG))
+  arrange(desc(SMOG)) %>%
+  filter(speaker %in% c("Joy","Fear","Disgust","Anger","Sadness","Bing Bong"))
 
 sentence_smog <- text_cleanish %>%
   rowwise() %>%
   mutate(n_syllables = count_syllable(text)) %>%
   ungroup() %>%
-  arrange(desc(n_syllables))
-
-sentence_results <- left_join(sentence_smog %>%
-                                group_by(text) %>%
-                                summarise(n_text = n_distinct(text)),
-                              sentence_smog %>%
-                                group_by(text) %>%
-                                filter(n_syllables >= 3) %>% 
-                                summarise(n_polysyllables = n())) %>%
-  mutate(SMOG = 1.0430 * sqrt(30 * n_polysyllables/n_text) + 3.1291) %>%
-  arrange(desc(SMOG))
+  arrange(desc(n_syllables))%>%
+  filter(speaker %in% c("Joy","Fear","Disgust","Anger","Sadness","Bing Bong"))
 
 sentence_results <- sentence_smog %>%
   mutate(complexity = textstat_readability(text,"SMOG")) %>%
   arrange(desc(complexity))
 
-### tab stuff
 
-tab.sent.speaker <- sent.speaker %>%
-  mutate(total = joy + fear + sadness + anger + disgust) %>%
-  filter(total > 50)  %>% 
-  select(speaker,joy,fear,sadness,anger,disgust) %>%
-  mutate(total_emotions = joy + fear + sadness + anger + disgust,
-         joy_percent = joy/total_emotions,
-         fear_percent = fear/total_emotions,
-         sadness_percent = sadness/total_emotions,
-         anger_percent = anger/total_emotions,
-         disgust_percent = disgust/total_emotions) %>%
-  select(speaker,joy,joy_percent,fear,fear_percent,sadness,sadness_percent,
-         anger,anger_percent,disgust,disgust_percent)
   
   
