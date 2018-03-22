@@ -144,9 +144,9 @@ text.dat <- text_cleanish %>%
   mutate(speaker_count = n()) %>%
   ungroup()
 
-zz<- text.dat %>%
+text.dat %>%
   group_by(speaker) %>%
-  count(text, sort = TRUE)
+  count(speaker, sort = TRUE)
 
 #####
 #sentiment analysis first
@@ -240,6 +240,11 @@ inside.out.dat <- left_join(quoter.dat,sent.data)
 write.csv(inside.out.dat,"inside_out.csv")
 
 #####
+#lexical 
+
+
+#####
+#sentence smog
 sentence_dat <- text.dat %>% 
   as.tibble() %>%
   janitor::clean_names() %>%
