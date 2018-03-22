@@ -1,31 +1,31 @@
-,linenumber,text,speaker,sentiment,n,n_text,n_polysyllables,SMOG,total,ratio_positive,scores,percents
-1,669,"Well, she wakes up sometimes when she has a scary dream. We could scare her.",Sadness,anger,1,10,1,4.935628992,71,0.32,11,15.71295775
-2,402,"But it's over the Memory Dump. If we fall, we'll be forgotten forever.",Sadness,fear,1,12,2,5.461318901,71,0.32,13,18.30985915
-3,194,Crying helps me slow down and obsessive over the weight of life's problems.,Sadness,sadness,2,16,2,5.148860815,71,0.32,19,26.65056338
-4,188,"My favorite? Um, well, I like it when we're outside.",Sadness,joy,1,13,1,4.71353074,71,0.32,23,32.3943662
-5,176,I keep making mistakes like that. I'm awful.,Sadness,disgust,1,5,1,4.71353074,71,0.32,5,6.932253521
-6,687,"Just follow my lead. Here we go. Bark, bark, bark, bark.",Joy,anger,4,16,1,4.557286569,178,0.4,25,14.26494382
-7,273,"Alright everyone, fresh start. We are going to have a good day which will turn into a good week, which will turn into a good year, which turns into a good life!",Joy,joy,4,30,8,6.079149491,178,0.4,71,39.88764045
-8,184,"What about that time, with Meg? When Riley laughed so hard, milk came out of her nose.",Joy,disgust,1,11,3,6.112484442,178,0.4,12,6.631573034
-9,173,"Sadness, you nearly touch a core memory. And when you touch them, we can't change them back!",Joy,fear,1,20,1,4.406508901,178,0.4,29,16.29213483
-10,54,"Hey, look! The Golden Gate Bridge, isn't that great? It's not made up of solid gold like we thought, which is kind of a disappointment. But still.",Joy,sadness,1,18,2,5.033348758,178,0.4,41,22.92370787
-11,682,"Man, she is one bad actress. Teeth falling out. Yeah, I'm used to that one. Let me guess, we have no pants on.",Fear,sadness,2,10,1,5.148860815,56,0.36,12,21.31857143
-12,643,"Like quitting. That's what I'm doing. Sure, it's the coward's way out. But this coward gonna survive.",Fear,disgust,1,3,2,5.033348758,56,0.36,4,7.032857143
-13,209,"Ooh, I'm so jumpy. My nerves are shot!",Fear,anger,1,6,2,4.557286569,56,0.36,8,14.50571429
-14,206,What was that? Was it a bear? It's a bear!,Fear,fear,2,9,1,4.71353074,56,0.36,12,21.42857143
-15,55,"I sure am glad you told me earthquakes are a myth, Joy. Otherwise I'd be terrified right now.",Fear,joy,2,7,2,4.406508901,56,0.36,20,35.71428571
-16,474,"Hey-hey. Stay happy. We do not want to lose anymore islands here, guys.",Disgust,anger,1,8,2,4.557286569,51,0.31,10,19.82784314
-17,260,"When I'm through, I think you're look so good, the other things will look at their own outfits and barf.",Disgust,joy,1,7,1,5.288315135,51,0.31,16,31.37254902
-18,221,"Yeah, Joy. We could be lying on a dirty floor, in a bag.",Disgust,disgust,2,9,1,4.557286569,51,0.31,12,23.41941176
-19,159,"Good going, Sadness. Now when Riley thinks of that moment with Dad, she's gonna feel sad. Bravo.",Disgust,sadness,1,6,2,4.406508901,51,0.31,6,11.65470588
-20,23,"Okay, caution. There is a dangerous smell, people. Hold on. What is that?",Disgust,fear,2,7,2,6.182691328,51,0.31,7,13.7254902
-21,582,"Check it out! Trophy Town. Medals, ribbons, everyone's a winner! I won first place!",Bing Bong,joy,2,11,3,6.112484442,45,0.29,13,28.88888889
-22,565,Death! Unlucky death!,Bing Bong,sadness,3,6,1,5.461318901,45,0.29,9,19.89
-23,554,"Alright, do not panic. What is important is that we all stay together.",Bing Bong,fear,1,6,2,6.4273556,45,0.29,9,20
-24,503,Yeah. I blow a mean nose.,Bing Bong,disgust,1,4,1,5.985473137,45,0.29,5,11.00111111
-25,489,"Ha-ha! So long, sucker! Ow. I hurt all over.",Bing Bong,anger,2,6,1,5.461318901,45,0.29,9,20.22
-26,208,"I saw a really hairy guy, he looked like a bear.",Anger,disgust,2,8,2,5.985473137,42,0.19,9,21.31857143
-27,749,You idiot. It was a dream! This is ridiculous. We can't even get a good night sleep anymore. Time to take action. Stupid Mom and Dad. If they hadn't moved us none of this would have happened. Who's with me?,Anger,anger,1,8,2,5.985473137,42,0.19,9,21.64857143
-28,227,We should lock the door and scream that curse word we know. It's a good one!,Anger,joy,1,6,1,4.406508901,42,0.19,8,19.04761905
-29,139,"Congratulations San Francisco, you've ruined pizza! First the Hawaiians, and now you!",Anger,sadness,1,5,1,5.683917802,42,0.19,6,14.17571429
-30,83,Get out the rubber ball. We're in solitary confinement.,Anger,fear,1,9,1,5.033348758,42,0.19,10,23.80952381
+,linenumber,text,speaker,sentiment,n,row,n_text,n_polysyllables,SMOG,total,ratio_positive,scores,percents,speaker_count
+1,199, Crying helps me slow down and obsessive over the weight of life's problems.,Sadness,sadness,2,38,20,2,4.935628992,112,0.32,29,25.78285714,356
+2,193," My favorite? Um, well, I like it when we're outside.",Sadness,joy,1,160,15,1,4.604124746,112,0.32,36,32.14285714,356
+3,407," But it's over the Memory Dump. If we fall, we'll be forgotten forever.",Sadness,fear,1,267,17,3,5.52893345,112,0.32,21,18.75,356
+4,181, I keep making mistakes like that. I'm awful.,Sadness,disgust,1,150,7,3,5.873414542,112,0.32,10,8.818571429,356
+5,674," Well, she wakes up sometimes when she has a scary dream. We could scare her.",Sadness,anger,1,376,12,1,4.7782278,112,0.32,16,14.50571429,356
+6,57," Hey, look! The Golden Gate Bridge, isn't that great? It's not made up of solid gold like we thought, which is kind of a disappointment. But still.",Joy,sadness,1,104,22,2,4.851557811,225,0.37,58,25.66777778,1050
+7,278," Alright everyone, fresh start. We are going to have a good day which will turn into a good week, which will turn into a good year, which turns into a good life!",Joy,joy,4,5,33,9,6.112484442,225,0.37,84,37.33333333,1050
+8,178," Sadness, you nearly touch a core memory. And when you touch them, we can't change them back!",Joy,fear,1,147,23,1,4.320289942,225,0.37,35,15.55555556,1050
+9,189," What about that time, with Meg? When Riley laughed so hard, milk came out of her nose.",Joy,disgust,1,156,13,3,5.873414542,225,0.37,16,7.001111111,1050
+10,692," Just follow my lead. Here we go.  Bark, bark, bark, bark.",Joy,anger,4,6,19,1,4.439693879,225,0.37,32,14.44222222,1050
+11,687," Man, she is one bad actress.  Teeth falling out. Yeah, I'm used to that one. Let me guess, we have no pants on. ",Fear,sadness,2,64,12,1,4.7782278,74,0.35,15,20.16027027,264
+12,58," I sure am glad you told me earthquakes are a myth, Joy. Otherwise I'd be terrified right now.",Fear,joy,2,36,12,1,4.7782278,74,0.35,26,35.13513514,264
+13,211, What was that? Was it a bear? It's a bear!,Fear,fear,2,41,11,1,4.851557811,74,0.35,15,20.27027027,264
+14,648," Like quitting. That's what I'm doing. Sure, it's the coward's way out. But this coward gonna survive.",Fear,disgust,1,362,5,1,5.683917802,74,0.35,7,9.349459459,264
+15,214," Ooh, I'm so jumpy. My nerves are shot!",Fear,anger,1,184,8,1,5.148860815,74,0.35,11,15.08486486,264
+16,164," Good going, Sadness. Now when Riley thinks of that moment with Dad, she's gonna feel sad. Bravo.",Disgust,sadness,1,140,7,3,6.4273556,61,0.34,7,11.36540984,244
+17,265," When I'm through, I think you're look so good, the other things will look at their own outfits and barf.",Disgust,joy,1,226,9,2,5.82211442,61,0.34,21,34.42622951,244
+18,23," Okay, caution. There is a dangerous smell, people. Hold on. What is that?",Disgust,fear,2,29,9,2,5.82211442,61,0.34,9,14.75409836,244
+19,226," Yeah, Joy. We could be lying on a dirty floor, in a bag.",Disgust,disgust,2,43,9,3,5.873414542,61,0.34,12,19.56213115,244
+20,479," Hey-hey. Stay happy. We do not want to lose anymore islands here, guys.",Disgust,anger,1,295,9,2,6.2581,61,0.34,12,19.89213115,244
+21,570, Death! Unlucky death!,Bing Bong,sadness,3,15,9,2,5.82211442,71,0.34,13,18.19985915,355
+22,587," Check it out! Trophy Town. Medals, ribbons, everyone's a winner!  I won first place!",Bing Bong,joy,2,62,14,3,5.773587663,71,0.34,24,33.8028169,355
+23,559," Alright, do not panic. What is important is that we all stay together.",Bing Bong,fear,1,336,9,3,6.4273556,71,0.34,13,18.30985915,355
+24,508, Yeah. I blow a mean nose.,Bing Bong,disgust,1,312,5,1,5.683917802,71,0.34,6,8.340704225,355
+25,494," Ha-ha! So long, sucker!  Ow. I hurt all over.",Bing Bong,anger,2,58,8,1,5.148860815,71,0.34,15,21.34676056,355
+26,144," Congratulations San Francisco, you've ruined pizza! First the Hawaiians, and now you!",Anger,sadness,1,130,7,1,5.288315135,62,0.27,9,14.40612903,253
+27,232, We should lock the door and scream that curse word we know. It's a good one!,Anger,joy,1,201,13,1,4.71353074,62,0.27,17,27.41935484,253
+28,87, Get out the rubber ball. We're in solitary confinement.,Anger,fear,1,117,10,1,4.935628992,62,0.27,12,19.35483871,253
+29,213," I saw a really hairy guy, he looked like a bear.",Anger,disgust,1,182,10,3,6.2581,62,0.27,12,19.24483871,253
+30,754, You idiot. It was a dream! This is ridiculous. We can't even get a good night sleep anymore. Time to take action.  Stupid Mom and Dad. If they hadn't moved us none of this would have happened. Who's with me?,Anger,anger,1,401,10,3,6.2581,62,0.27,12,19.57483871,253

@@ -1,5 +1,5 @@
 #packages and functions and loading data
-pacman::p_load(tidyverse,tm,tidytext,ggplot2,quanteda,stm,dplyr,readability,mice)
+pacman::p_load(tidyverse,rvest,tm,tidytext,ggplot2,quanteda,stm,dplyr,readability,mice)
 
 stop <- rbind(tibble(text = stopwords("SMART")),"ill","im","yeah","dont","hey","back","lets")
 nrc <- sentiments %>% filter(lexicon == "nrc") %>% select(-score, -lexicon)%>%
@@ -102,13 +102,32 @@ count_syllable <- function(ortho) {
 }
 quoter <-function(y,z){
  place <- quote.dat %>%
+    mutate(row = row_number()) %>%
     filter(speaker == y & sentiment == z) %>%
-    select(linenumber,n,text) %>%
+    select(linenumber,n,row,text) %>%
     arrange(desc(n))
     print(place)
 }
 
-text_cleanish <- read_csv("GitHub/Inside-Out/text_cleanish.csv") %>%
+
+webpage <- read_html('http://transcripts.wikia.com/wiki/Inside_Out')
+web_text <- html_nodes(webpage,'#mw-content-text') %>%
+             html_text() %>%
+  strsplit(split = "\n") %>%
+  unlist() %>%
+  .[. != ""]
+
+webdat <- data.frame(web_text) %>% 
+  mutate(web_text = trimws(str_replace(web_text, "\\[.*?\\]", ""))) %>%
+  filter(web_text != "" & web_text != "Transcript Edit") %>% 
+  separate(web_text,into = c("speaker","text"), sep=":")
+
+webdat$text<- gsub("\\[[^\\]]*\\]", "", webdat$text, perl=TRUE);
+webdat$text<- gsub("\\([^\\]]*\\)", "", webdat$text, perl=TRUE);
+webdat$text <- gsub('"', '', webdat$text)       
+
+text_cleanish<-webdat%>%
+  filter(text != " ") %>%
   mutate(linenumber = row_number())
 
 #####
@@ -125,12 +144,16 @@ text.dat <- text_cleanish %>%
   mutate(speaker_count = n()) %>%
   ungroup()
 
+zz<- text.dat %>%
+  group_by(speaker) %>%
+  count(text, sort = TRUE)
+
 #####
 #sentiment analysis first
 sent.speaker <- text.dat %>% 
   filter(speaker %in% c("Joy","Fear","Disgust","Anger","Sadness","Bing Bong")) %>%
   inner_join(nrc, by = c("text" = "word")) %>%
-  count(speaker, sentiment) %>%
+  count(speaker, sentiment, speaker_count) %>%
   spread(sentiment, n) %>%
   mutate(total = anger + disgust + fear + joy + sadness,
          ratio_positive = round((joy)/total,2),
@@ -142,10 +165,11 @@ sent.speaker <- text.dat %>%
          disgust_percent = ((disgust/total_emotions)*100)-.11) %>%
   arrange(desc(ratio_positive)) %>%
   select(speaker,joy,joy_percent,fear,fear_percent,sadness,sadness_percent,
-         anger,anger_percent,disgust,disgust_percent,total,ratio_positive) %>%
+         anger,anger_percent,disgust,disgust_percent,total,ratio_positive,speaker_count) %>%
   gather(key = sentiment, value = scores,-speaker,-total,-ratio_positive,
-         -joy_percent,-fear_percent,-sadness_percent,-anger_percent,-disgust_percent) %>%
+         -joy_percent,-fear_percent,-sadness_percent,-anger_percent,-disgust_percent,-speaker_count) %>%
   mutate(scores = round(scores,3))
+
 #someone teach me how to do this better
 sent.place <- sent.speaker %>%
   select(speaker,joy_percent,fear_percent,sadness_percent,disgust_percent,anger_percent) %>%
@@ -159,7 +183,7 @@ sent.place <- sent.speaker %>%
   select(speaker,percents,sentiment)
          
 sent.data <- left_join(sent.speaker,sent.place) %>%
-  select(speaker,total,ratio_positive,sentiment,scores,percents)
+  select(speaker,total,ratio_positive,sentiment,scores,percents,speaker_count)
 
 
 #####
@@ -172,16 +196,6 @@ gobble_text <- text_cleanish %>%
   rowwise() %>%
   mutate(n_syllables = (count_syllable(text))) %>%
   ungroup()
-
-gobble_speak <- left_join(gobble_text %>%
-  group_by(speaker) %>%
-  summarise(n_text = n_distinct(text)),
-  gobble_text %>%
-  group_by(speaker) %>%
-  filter(n_syllables >= 3) %>%
-  summarise(n_polysyllables = n())) %>%
-  mutate(SMOG_speaker = 1.0430 * sqrt(30 * n_polysyllables/n_text) + 3.1291) %>%
-  arrange(desc(speaker))
 
 gobble_data <- left_join(gobble_text %>%
   group_by(speaker,sentiment) %>%
@@ -206,19 +220,20 @@ quote.dat <- text.dat %>%
   ungroup() %>%
   arrange(desc(n)) %>%
   left_join(text_cleanish, by = "linenumber") %>%
-  mutate(speaker = speaker.x) %>%
-  select(linenumber,text,speaker,sentiment,n)
+  mutate(speaker = speaker.x,
+         row = row_number()) %>%
+  select(linenumber,text,speaker,sentiment,n,row)
 
-quoter("Anger","anger")
+
+quoter("Sadness","sadness")
 
 quote.joiner <- quote.dat %>%
-  filter(linenumber %in% c(273,173,687,54,184,
-                           55,206,209,682,643,
-                           227,83,749,139,208,
-                           188,402,669,194,176,
-                           260,23,474,159,221,
-                           582,554,489,565,503))
-
+  slice(c(38,160,267,150,376,
+          104,5,147,156,6,
+          64,36,41,362,184,
+          140,226,29,43,295,
+          15,62,336,312,58,
+          130,201,117,182,401))
 
 quoter.dat <- inner_join(quote.joiner,gobble_data)
 inside.out.dat <- left_join(quoter.dat,sent.data)
